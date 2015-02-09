@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# 
+
+<img src="pocket-knife.jpg"/>
+
+???
+
+Da skal vi kjapt gå gjennom SRP, som er det første prinsippet av SOLID, først introdusert av Uncle Bob. 
+
+---
+
+class: center, middle
+
+'Every class should have one responsibility, and that responsibility should be entirely encapsulated by the class.'
+
+'A class should only have one reason to change'
+
+???
+
+For å forstå denne definisjonen, hjelper det å først definere hva et ansvar er: 
+
+Et ansvar i denne konteksten blir sett på 'som en grunn til å forandre seg'.
+
+I praksis vil dette si at dersom det er flere grunner til å forandre en modul, så bryter vi med dette prinsippet.
+ 
+La oss anta at du befinner deg i en hierarkisk organisasjon, med avdelinger som Database-admins, Produktsjefer, Markedsføring, Designere og andre ledere. Disse personene har predefinerte roller. Ledergruppen kommer ned til deg og ber deg forandre forretningslogikk. Like etterpå kommer database-folkene til deg og sier at databasen skal byttes fra for eksempel MySQL til NoSQL. Dersom du nå setter deg ned og implementerer disse endringene og rører samme modul/klasse ved begge anledningene, da har man per def brutt SRP. 
+
+'A responsibility is a family of functions that serves one particular actor'
+
+---
+# Hvorfor er dette en bra ting?
+
+Koden blir lettere å endre
+
+Moduler blir lettere å teste
+
+Robusthet
+
+???
+
+Det øverste punktet er selvforklarende. Dersom en klasse har et ansvarsområde, så er det lettere å spesifikt teste dette. 
+Som en følge av at testbarheten går opp, samt at man har enklere moduler, vil det være lettere å endre koden. Man trenger ikke lengre å tråle seg gjennom 1000 linjer med kode for å gjøre en mindre kosmetisk endring. 
+
+---
+
+# Eksempel
+
+```java
+class MoviePlayer{
+	Movie findById(Id id){}
+	String getDirector(){}
+	Time getDuration(){}
+	byte[] streamMP4(){}
+	void pause(){}
+	void play(){}
+	void fastForward(){}
+	void backTrack(){}
+	void slowMotion(){}
+	void renderMoviePlayer(){}
+}
+```
+
+???
+
+La oss anta at vi har følgende rævva modul. Hvor mange grunner til å forandre seg har denne? Gi meg noen eksempler på hvordan denne kan forandres.
+
+(Kopier metoden over til en ny fil, og begynn refaktorering).
+
+Eksempler på grunner kan være å skrive ut en liste over skuespillere, dersom man vil legge til flere videoformater, man vil legge til datbasekall, etc. 
+
+---
+
+# Eksempel
+
+```java
+class MoviePlayer{
+	byte[] streamMP4(){}
+	void pause(){}
+	void play(){}
+	void fastForward(){}
+	void backTrack(){}
+	void slowMotion(){}
+}
+class MovieRepository{
+	Movie findById(Id id){}
+}
+class MovieMeta{
+	String getDirector(){}
+	Time getDuration(){}
+}
+```
+
+???
+
+Ved bruk av sunn fornuft kan modulen bli refaktorert til dette. Er vi ferdig nå?
+ 
+---
+# Experiment time
+<code>
+`git checkout srp-esben`
+</code>
+
+???
+
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
