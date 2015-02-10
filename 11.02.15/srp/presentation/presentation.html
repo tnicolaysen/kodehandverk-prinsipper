@@ -27,7 +27,7 @@ class: center, middle
 
 ???
 
-Da skal vi kjapt gå gjennom SRP, som er det første prinsippet av SOLID, først introdusert av Uncle Bob. 
+Da skal vi kjapt gå gjennom SRP, som er det første prinsippet av SOLID, først introdusert av Robert Martin. 
 
 ---
 
@@ -39,29 +39,35 @@ class: center, middle
 
 ???
 
+Definisjonen av SRP lyder som følger; "Every class should have one responsibility, and that responsibility should be entirely encapsulated by the class".
+
+Videre sier SRP at 'A class should only have one reason to change.'
+
 For å forstå denne definisjonen, hjelper det å først definere hva et ansvar er: 
 
-Et ansvar i denne konteksten blir sett på 'som en grunn til å forandre seg'.
+Et ansvar i denne konteksten blir sett på 'som en årsak til å forandre seg'.
 
-I praksis vil dette si at dersom det er flere grunner til å forandre en modul, så bryter vi med dette prinsippet.
+Videre kan man se på disse ansvarene som en familie av funksjoner som betjener en bestemt rolle, potensielt innad i organisjasjonen.
  
-La oss anta at du befinner deg i en hierarkisk organisasjon, med avdelinger som Database-admins, Produktsjefer, Markedsføring, Designere og andre ledere. Disse personene har predefinerte roller. Ledergruppen kommer ned til deg og ber deg forandre forretningslogikk. Like etterpå kommer database-folkene til deg og sier at databasen skal byttes fra for eksempel MySQL til NoSQL. Dersom du nå setter deg ned og implementerer disse endringene og rører samme modul/klasse ved begge anledningene, da har man per def brutt SRP. 
+La oss anta at du befinner deg i en hierarkisk organisasjon, med avdelinger som Database-admins, Produktsjefer, Markedsføring og Designere.
 
-'A responsibility is a family of functions that serves one particular actor'
+Produktsjefen kommer ned til deg og ber deg forandre forretningslogikk. Like etterpå kommer database-avdelingen til deg og sier at databasen skal byttes fra MySQL til en NoSQL-database. 
+
+Dersom du nå setter deg ned og implementerer disse endringene og rører samme modul/klasse ved begge anledningene, har man brutt SRP. 
 
 ---
+class: center, middle
+
 # Hvorfor er dette en bra ting?
-
-Koden blir lettere å endre
-
-Moduler blir lettere å teste
-
-Robusthet
 
 ???
 
-Det øverste punktet er selvforklarende. Dersom en klasse har et ansvarsområde, så er det lettere å spesifikt teste dette. 
-Som en følge av at testbarheten går opp, samt at man har enklere moduler, vil det være lettere å endre koden. Man trenger ikke lengre å tråle seg gjennom 1000 linjer med kode for å gjøre en mindre kosmetisk endring. 
+For nye utviklere vil det kanskje være lettere å skitne til hendene, fordi hver modul bare er ansvarlig for å gjøre en enkelt ting.
+Det vil rett og slett bli lettere å endre koden. 
+
+Ettersom en klasse har et ansvar, vil det være lettere å teste dette.
+
+Altså sitter vi igjen med en mer robust kodebase
 
 ---
 
@@ -75,20 +81,36 @@ class MoviePlayer{
 	byte[] streamMP4(){}
 	void pause(){}
 	void play(){}
+	void playNextMovie(){}
 	void fastForward(){}
-	void backTrack(){}
+	void backtrack(){}
 	void slowMotion(){}
 	void renderMoviePlayer(){}
 }
+
 ```
 
 ???
 
-La oss anta at vi har følgende rævva modul. Hvor mange grunner til å forandre seg har denne? Gi meg noen eksempler på hvordan denne kan forandres.
+Så, over på et eksempel som jeg tenkte vi skulle løse i plenum.
 
-(Kopier metoden over til en ny fil, og begynn refaktorering).
+Vi er ansvarlige for å lage en videoavspiller, og har foreløpig kommet opp med denne shitty modulen.
+
+ Hvor mange grunner ser dere til å forandre seg har denne? Hvor begynner vi?
+
+/*(Kopier metoden over til en ny fil, og begynn refaktorering).*/
 
 Eksempler på grunner kan være å skrive ut en liste over skuespillere, dersom man vil legge til flere videoformater, man vil legge til datbasekall, etc. 
+
+---
+
+???
+
+Helt til slutt tenkte jeg å hente inn litt erfaringer fra dere. Selv sitter jeg stort sett på frontend, hvor vi skriver javascript-moduler i vanilla + jQuery. 
+
+Så da lyder spørsmålet mitt som følgende: Er dette et prinsipp som brukes dette ofte på javascript-koden deres? 
+
+Hvis man for eksempel har et enkelt skjema, med litt toggling av hvilke deler som skal vises, og som skal sendes til et rest-api. Er dette prinsippet brukbart i en slik kontekst
 
 ---
 
@@ -111,20 +133,6 @@ class MovieMeta{
 	Time getDuration(){}
 }
 ```
-
-???
-
-Ved bruk av sunn fornuft kan modulen bli refaktorert til dette. Er vi ferdig nå?
- 
----
-# Experiment time
-<code>
-`git checkout srp-esben`
-</code>
-
-???
-
-
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
